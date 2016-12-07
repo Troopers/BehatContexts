@@ -12,5 +12,9 @@
             "name": "Charlie Lucas",
             "email": "charlielucas.cl@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": { "Troopers\\BehatContexts": "src/" }
+    },
+    "homepage": "http://troopers.agency"
 }
