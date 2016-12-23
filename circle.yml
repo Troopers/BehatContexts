@@ -1,0 +1,8 @@
+machine:
+  timezone:
+    Europe/Paris
+  php:
+    version: 7.0.4
+test:
+  override:
+    - vendor/phpunit/phpunit/phpunit src
