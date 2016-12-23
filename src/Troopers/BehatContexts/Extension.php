@@ -4,55 +4,112 @@ namespace Troopers\BehatContexts;
 
 use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Knp\FriendlyContexts\DependencyInjection\Compiler;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Troopers\BehatContexts\DependencyInjection\Compiler;
 
+/**
+ * Class Extension
+ * @package Troopers\BehatContexts
+ */
 class Extension implements ExtensionInterface
 {
-    public function initialize(ExtensionManager $extensionManager)
-    {
-    }
+    /**
+     * {@inheritDoc}
+     */
+    public function initialize(ExtensionManager $extensionManager){}
 
+    /**
+     * @param ContainerBuilder $container
+     * @param array $config
+     * @throws \Exception
+     */
     public function load(ContainerBuilder $container, array $config)
     {
+        // Define Parameters
+        $parameters = [];
+        $this->buildParameters('troopers.behatcontexts', $parameters, $config);
+        foreach ($parameters as $name => $parameter)
+        {
+            $container->setParameter($name, $parameter);
+        }
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/services'));
-        /*$loader->load('core.yml');
-        $loader->load('fakers.yml');
-        $loader->load('guessers.yml');
-        $loader->load('builder.yml');
+        $loader->load('core.yml');
 
-        $container->setParameter('friendly.parameters', $config);
 
-        $container->addCompilerPass(new Compiler\ConfigPass);
-        $container->addCompilerPass(new Compiler\FormatGuesserPass);
-        $container->addCompilerPass(new Compiler\FakerProviderPass);
-        $container->addCompilerPass(new Compiler\ApiUrlPass);
-        $container->addCompilerPass(new Compiler\KernelPass);*/
+        if($config['alias_entity']['enabled'])
+        {
+            $container->addCompilerPass(new Compiler\AliasEntityPass());
+        }
+        $container->addCompilerPass(new Compiler\ExtendedTableNodePass());
+        if($config['mails'])
+        {
+            $loader->load('mail.yml');
+            $container->addCompilerPass(new Compiler\MailPass());
+        }
     }
 
+    /**
+     * @param ArrayNodeDefinition $builder
+     */
     public function configure(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()
-                ->arrayNode('extended_entity')
+                ->arrayNode('alias_entity')
                     ->canBeEnabled()
+                ->end()
+                ->arrayNode('mails')
+                    ->children()
+                        ->scalarNode('path')
+                            ->isRequired()
+                        ->end()
+                        ->scalarNode('key')
+                            ->defaultValue('keys')
+                            ->cannotBeEmpty()
+                        ->end()
+                        ->arrayNode('translation')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('firstCharacter')
+                                    ->defaultValue('%')
+                                    ->isRequired()
+                                ->end()
+                                ->scalarNode('lastCharacter')
+                                    ->defaultValue('%')
+                                    ->isRequired()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
                 ->end()
             ->end()
         ;
     }
 
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
     }
 
+    /**
+     * @return string
+     */
     public function getConfigKey()
     {
-        return 'friendly';
+        return 'troopers_behat';
     }
 
+    /**
+     * @param $name
+     * @param $parameters
+     * @param $config
+     */
     protected function buildParameters($name, &$parameters, $config)
     {
         foreach ($config as $key => $element) {
@@ -63,6 +120,11 @@ class Extension implements ExtensionInterface
         }
     }
 
+    /**
+     * @param array $array
+     *
+     * @return bool
+     */
     protected function arrayHasStringKeys(array $array)
     {
         foreach ($array as $key => $value) {

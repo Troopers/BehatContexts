@@ -1,0 +1,8 @@
+services:
+    troopers.behatcontexts.configreader:
+        class: Troopers\BehatContexts\Component\ConfigReader
+        arguments:
+            - "%paths.base%"
+
+    troopers.behatcontexts.config.translator:
+        class: Troopers\BehatContexts\Component\ConfigTranslator
