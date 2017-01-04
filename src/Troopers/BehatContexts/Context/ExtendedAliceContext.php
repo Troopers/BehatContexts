@@ -1,14 +1,18 @@
 <?php
 
-namespace Trooopers\BehatContexts\Context;
+namespace Troopers\BehatContexts\Context;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use Nelmio\Alice\Fixtures\Loader;
 use Doctrine\ORM\EntityManager;
 use Knp\FriendlyContexts\Context\AliceContext;
 
+/**
+ * Class ExtendedAliceContext
+ *
+ * @package Troopers\BehatContexts\Context
+ */
 class ExtendedAliceContext extends AliceContext {
 
     /**
@@ -36,7 +40,7 @@ class ExtendedAliceContext extends AliceContext {
      * @throws OptimisticLockException
      * @throws ORMInvalidArgumentException
      */
-    protected function loadFixtures(Loader $loader, $fixtures, $files)
+    protected function loadFixtures($loader, $fixtures, $files)
     {
         $persistable = $this->getPersistableClasses();
         /** @var EntityManager $em */
