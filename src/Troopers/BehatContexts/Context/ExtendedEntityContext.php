@@ -1,12 +1,17 @@
 <?php
 
-namespace Trooopers\BehatContexts\Context;
+namespace Troopers\BehatContexts\Context;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Knp\FriendlyContexts\Context\EntityContext;
 use Doctrine\DBAL\Connection;
 
+/**
+ * Class ExtendedEntityContext
+ *
+ * @package Troopers\BehatContexts\Context
+ */
 class ExtendedEntityContext extends EntityContext {
     /**
      * @BeforeScenario
