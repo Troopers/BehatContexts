@@ -24,6 +24,11 @@ class ConfigReader {
      * @param $key
      *
      * @return array
+     * @throws \RuntimeException
+     * @throws \Symfony\Component\Yaml\Exception\ParseException
+     * @throws \InvalidArgumentException
+     * @throws \Symfony\Component\Filesystem\Exception\FileNotFoundException
+     * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function load($path, $key)
     {
@@ -41,7 +46,7 @@ class ConfigReader {
             $config = Yaml::parse($configFile->getContents());
             if (!isset($config[$key])) {
                 throw new InvalidConfigurationException(
-                    'The file located in '.$configFile." has no config value '".$key."',"
+                    'The file located in '.$configFile.' has no config value "'.$key.'"'
                 );
             }
             foreach ($config[$key] as $index => $value)

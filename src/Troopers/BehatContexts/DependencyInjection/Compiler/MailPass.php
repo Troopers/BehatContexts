@@ -8,8 +8,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Troopers\BehatContexts\Utils\Asserter;
-use Troopers\BehatContexts\Utils\TextFormater;
 
 /**
  * Pass to permit to alias entity

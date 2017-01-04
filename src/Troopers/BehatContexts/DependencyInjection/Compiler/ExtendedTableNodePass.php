@@ -6,7 +6,6 @@ use Behat\Testwork\ServiceContainer\Exception\ExtensionInitializationException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Troopers\BehatContexts\Utils\Asserter;
 use Troopers\BehatContexts\Utils\TextFormater;
 
 /**
@@ -22,12 +21,10 @@ class ExtendedTableNodePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if($container->hasDefinition('friendly.text.formater') && $container->hasDefinition('friendly.asserter'))
+        if($container->hasDefinition('friendly.text.formater'))
         {
             $definition = $container->getDefinition('friendly.text.formater');
             $definition->setClass(TextFormater::class);
-            $definition = $container->getDefinition('friendly.asserter');
-            $definition->setClass(Asserter::class);
         }else{
             throw new ExtensionInitializationException('Missing extension Knp\FriendlyContexts\Extension', 'Knp\FriendlyContexts\Extension');
         }

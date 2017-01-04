@@ -65,7 +65,7 @@ class ConfigTranslator {
         foreach ($parameters as $parameter) {
             if(!is_array($parameter) || count($parameter) !== 2)
             {
-                throw new \InvalidArgumentException('Parameters given for translation does not match with [\'translationKey\' => $translationValue]');
+                throw new \InvalidArgumentException('Parameters given for translation does not match with [0] => \'translationKey\', [1] => $translationValue');
             }
             $newParameters[$firstCharacter.$parameter[0].$lastCharacter] = $parameter[1];
         }

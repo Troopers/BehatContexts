@@ -2,6 +2,7 @@
 namespace Troopers\BehatContexts\Mail;
 use Alex\MailCatcher\Client;
 use Alex\MailCatcher\Message;
+use Behat\Mink\Selector\NamedSelector;
 use Symfony\Component\DomCrawler\Crawler;
 use Troopers\BehatContexts\Component\ConfigTranslator;
 
@@ -81,7 +82,7 @@ class MailChecker {
         ]);
         $content = $this->getContent($message);
         //test contents
-        foreach ($mailToTest as $text) {
+        foreach ($mailToTest['contents'] as $text) {
             if (false === strpos($content, $text)) {
                 throw new \InvalidArgumentException(sprintf("Unable to find text \"%s\" in current message:\n%s", $text, $message->getContent()));
             }
@@ -155,9 +156,11 @@ class MailChecker {
 
     public function getLink(array $mail = array(), array $values = array(), $link)
     {
+        $selector = new NamedSelector();
+        $xpath = $selector->translateToXPath(['link', $link]);
         $content = $this->build($mail, $values);
         $crawler = new Crawler($content);
-        $mailLink = $crawler->selectLink($link);
+        $mailLink = $crawler->filterXPath($xpath);
         return $mailLink->attr('href');
     }
 }
