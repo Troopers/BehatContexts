@@ -19,3 +19,4 @@ services:
             - "@troopers.behatcontexts.config.translator"
             - "%troopers.behatcontexts.mails%"
             - "@behat.mailcatcher.client"
+            - "@troopers.behatcontexts.content_validator.chain"

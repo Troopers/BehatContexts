@@ -5,6 +5,8 @@ use Alex\MailCatcher\Message;
 use Behat\Mink\Selector\NamedSelector;
 use Symfony\Component\DomCrawler\Crawler;
 use Troopers\BehatContexts\Component\ConfigTranslator;
+use Troopers\BehatContexts\ContentValidator\ContentValidatorInterface;
+use Troopers\BehatContexts\DependencyInjection\Compiler\ContentValidatorChain;
 
 
 /**
@@ -17,17 +19,22 @@ class MailChecker {
     private $configTranslator;
     private $mailConfig;
     private $mailcatcherClient;
+    private $contentValidatorChain;
 
     /**
      * MailChecker constructor.
      *
-     * @param \Troopers\BehatContexts\Component\ConfigTranslator $configTranslator
+     * @param \Troopers\BehatContexts\Component\ConfigTranslator                         $configTranslator
+     * @param                                                                            $mailConfig
+     * @param \Alex\MailCatcher\Client                                                   $mailcatcherClient
+     * @param \Troopers\BehatContexts\DependencyInjection\Compiler\ContentValidatorChain $contentValidatorChain
      */
-    public function __construct(ConfigTranslator $configTranslator, $mailConfig, Client $mailcatcherClient)
+    public function __construct(ConfigTranslator $configTranslator, $mailConfig, Client $mailcatcherClient, ContentValidatorChain $contentValidatorChain)
     {
         $this->configTranslator = $configTranslator;
         $this->mailConfig = $mailConfig;
         $this->mailcatcherClient = $mailcatcherClient;
+        $this->contentValidatorChain = $contentValidatorChain;
     }
 
     /**
@@ -36,6 +43,7 @@ class MailChecker {
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
+     * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
      */
     public function check(array $mail = array(), array $values = array())
     {
@@ -51,6 +59,7 @@ class MailChecker {
      * @param $values
      *
      * @return mixed
+     * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -81,13 +90,24 @@ class MailChecker {
             'subject' => $mailToTest['subject']
         ]);
         $content = $this->getContent($message);
-        //test contents
-        foreach ($mailToTest['contents'] as $text) {
-            if (false === strpos($content, $text)) {
-                throw new \InvalidArgumentException(sprintf("Unable to find text \"%s\" in current message:\n%s", $text, $message->getContent()));
+        if (isset($mailToTest['contents']) && is_array($mailToTest['contents']) && count($mailToTest['contents']) > 0)
+        {
+            /**
+             * @var string $contentValidatorKey
+             * @var array  $contentsToTest
+             */
+            foreach ($mailToTest['contents'] as $contentValidatorKey => $contentsToTest)
+            {
+                /** @var ContentValidatorInterface $contentValidator */
+                $contentValidator = $this->contentValidatorChain->getContentValidator($contentValidatorKey);
+
+                foreach ($contentsToTest as $value)
+                {
+                    $contentValidator->supports($value);
+                    $contentValidator->valid($value, $content);
+                }
             }
         }
-
 
         return $content;
     }
@@ -133,6 +153,8 @@ class MailChecker {
      * @param \Alex\MailCatcher\Message $message
      *
      * @return string
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     private function getContent(Message $message)
     {

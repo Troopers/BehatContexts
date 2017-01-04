@@ -11,6 +11,8 @@ namespace Troopers\BehatContexts\Tests\Mail;
 
 use Alex\MailCatcher\Tests\AbstractTest;
 use Troopers\BehatContexts\Component\ConfigTranslator;
+use Troopers\BehatContexts\ContentValidator\StringValidator;
+use Troopers\BehatContexts\DependencyInjection\Compiler\ContentValidatorChain;
 use Troopers\BehatContexts\Mail\MailChecker;
 
 class MailCheckerTest extends AbstractTest
@@ -37,7 +39,7 @@ class MailCheckerTest extends AbstractTest
                     'from' => 'sender@sender.sender',
                     'subject' => 'Mail to %context%',
                     'contents' => [
-                        'Content'
+                        'strings' => ['Content']
                     ]
                 ],
                 [
@@ -68,7 +70,7 @@ class MailCheckerTest extends AbstractTest
                     'from' => 'sender@sender.sender',
                     'subject' => 'Mail to %context%',
                     'contents' => [
-                        'Content'
+                        'strings' => ['Wrong Content']
                     ]
                 ],
                 [
@@ -98,7 +100,7 @@ class MailCheckerTest extends AbstractTest
                     'from' => 'sender@sender.sender',
                     'subject' => 'Mail to %context%',
                     'contents' => [
-                        'Wrong Content'
+                        'strings' => ['Wrong Content']
                     ]
                 ],
                 [
@@ -223,10 +225,22 @@ class MailCheckerTest extends AbstractTest
     private function getMailChecker()
     {
         $mailConfig = ['translation' =>['firstCharacter' => '%', 'lastCharacter'=>'%']];
+        $contentValidatorChain = $this->createMock(ContentValidatorChain::class);
+        $contentValidatorChain->method('getContentValidator')
+            ->will(
+              $this->returnValueMap(
+                  [
+                      [
+                          'strings',  new StringValidator()
+                      ]
+                  ]
+              )
+            );
         return new MailChecker(
             new ConfigTranslator(),
             $mailConfig,
-            $this->getClient()
+            $this->getClient(),
+            $contentValidatorChain
         );
     }
 
