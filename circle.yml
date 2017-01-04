@@ -12,4 +12,4 @@ dependencies:
 
 test:
   override:
-    - vendor/phpunit/phpunit/phpunit src
+    - vendor/phpunit/phpunit/phpunit src  --verbose --tap
