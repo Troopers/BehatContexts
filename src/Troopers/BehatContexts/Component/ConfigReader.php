@@ -53,7 +53,7 @@ class ConfigReader {
             {
                 if(array_key_exists($index, $result))
                 {
-                    throw new InvalidConfigurationException(sprintf('Duplicate key "%s" for configurations files located in %s', $key, $configFile));
+                    throw new InvalidConfigurationException(sprintf('Duplicate key "%s" for configurations files located in %s', $index, $configFile));
                 }
                 if($value !== null)
                 {
