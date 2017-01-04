@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Troopers\BehatContexts\DependencyInjection\Compiler;
 
+
 /**
  * Class Extension
  * @package Troopers\BehatContexts
@@ -30,6 +31,7 @@ class Extension implements ExtensionInterface
     {
         // Define Parameters
         $parameters = [];
+        $container->addCompilerPass(new Compiler\ContentValidatorCompilerPass());
         $this->buildParameters('troopers.behatcontexts', $parameters, $config);
         foreach ($parameters as $name => $parameter)
         {
