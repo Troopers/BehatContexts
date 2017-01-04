@@ -3,6 +3,13 @@ machine:
     Europe/Paris
   php:
     version: 7.0.4
+
+dependencies:
+  pre:
+     - gem install mime-types --version "< 3"
+     - gem install mailcatcher
+     - mailcatcher
+
 test:
   override:
     - vendor/phpunit/phpunit/phpunit src
