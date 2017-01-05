@@ -133,7 +133,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
         $configReader = new ConfigReader($this->driver->url());
         $this->expectException(InvalidConfigurationException::class);
         $this->expectExceptionMessageRegExp(
-            '/Duplicate key "test_key" for configurations files located in (\S*).yml$/'
+            '/Duplicate key "arg1" for configurations files located in (\S*).yml$/'
         );
         $configReader->load($this->directoryName, 'test_key');
     }
