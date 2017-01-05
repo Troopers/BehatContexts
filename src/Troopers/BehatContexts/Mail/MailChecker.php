@@ -47,7 +47,7 @@ class MailChecker {
      */
     public function check(array $mail = array(), array $values = array())
     {
-        $this->build($mail, values);
+        $this->build($mail, $values);
         if(isset($mail['CCI']))
         {
             $this->build(array_merge($mail, ['to' => $mail['CCI']]), $values);
@@ -176,6 +176,16 @@ class MailChecker {
         return $content;
     }
 
+    /**
+     * @param array $mail
+     * @param array $values
+     * @param       $link
+     *
+     * @return null|string
+     * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
+     */
     public function getLink(array $mail = array(), array $values = array(), $link)
     {
         $selector = new NamedSelector();

@@ -3,6 +3,7 @@ services:
         class: Troopers\BehatContexts\Context\Initializer\MailInitializer
         arguments:
             - "@troopers.behatcontexts.mail.collection"
+            - "@troopers.behatcontexts.mail.checker"
         tags:
             - { name: context.initializer }
     troopers.behatcontexts.mail.collection:

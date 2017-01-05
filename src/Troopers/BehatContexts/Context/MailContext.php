@@ -54,6 +54,7 @@ class MailContext implements Context, SnippetAcceptingContext, KernelAwareContex
      *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
+     * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
      */
     public function iShouldHaveTheEmailWith($event, TableNode $table)
     {
