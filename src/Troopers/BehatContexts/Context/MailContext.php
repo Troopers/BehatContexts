@@ -4,12 +4,8 @@ namespace Troopers\BehatContexts\Context;
 
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Symfony2Extension\Context\KernelAwareContext;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Troopers\BehatContexts\Collection\MailCollection;
 use Troopers\BehatContexts\Mail\MailChecker;
 
@@ -18,7 +14,7 @@ use Troopers\BehatContexts\Mail\MailChecker;
  *
  * @package Troopers\BehatContexts\BehatContexts\Context
  */
-class MailContext implements Context, SnippetAcceptingContext, KernelAwareContext
+class MailContext extends RawMinkContext implements Context
 {
     protected $kernel;
     /** @var  MailCollection */
@@ -34,16 +30,6 @@ class MailContext implements Context, SnippetAcceptingContext, KernelAwareContex
     {
         $this->mailCollection = $mailCollection;
         $this->mailChecker = $mailChecker;
-    }
-
-    /**
-     * Sets Kernel instance.
-     *
-     * @param KernelInterface $kernel
-     */
-    public function setKernel(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
     }
 
     /**
@@ -67,6 +53,9 @@ class MailContext implements Context, SnippetAcceptingContext, KernelAwareContex
      * @param                               $link
      * @param                               $event
      * @param \Behat\Gherkin\Node\TableNode $table
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
      */
     public function iFollowTheLinkForEmailEventWith($link, $event, TableNode $table)
     {
