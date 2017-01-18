@@ -4,9 +4,8 @@ namespace Troopers\BehatContexts\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
-use Behat\Behat\Context\Context as ContextInterface;
-use Troopers\BehatContexts\Context\MailContext;
 use Troopers\BehatContexts\Collection\MailCollection;
+use Troopers\BehatContexts\Context\MailContext;
 use Troopers\BehatContexts\Mail\MailChecker;
 
 class MailInitializer implements ContextInitializer
@@ -42,7 +41,6 @@ class MailInitializer implements ContextInitializer
     public function initializeContext(Context $context)
     {
         if ($context instanceof MailContext) {
-
             $context->initialize($this->mailCollection, $this->mailChecker);
         }
     }

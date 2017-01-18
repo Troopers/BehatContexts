@@ -2,7 +2,6 @@
 
 namespace Troopers\BehatContexts\Context;
 
-
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -10,16 +9,14 @@ use Troopers\BehatContexts\Collection\MailCollection;
 use Troopers\BehatContexts\Mail\MailChecker;
 
 /**
- * Class MailContext
- *
- * @package Troopers\BehatContexts\BehatContexts\Context
+ * Class MailContext.
  */
 class MailContext extends RawMinkContext implements Context
 {
     protected $kernel;
-    /** @var  MailCollection */
+    /** @var MailCollection */
     protected $mailCollection;
-    /** @var  MailChecker */
+    /** @var MailChecker */
     protected $mailChecker;
 
     /**
@@ -50,6 +47,7 @@ class MailContext extends RawMinkContext implements Context
 
     /**
      * @Given /^I follow the link "([^"]*)" for email ([^"]*) with:$/
+     *
      * @param                               $link
      * @param                               $event
      * @param \Behat\Gherkin\Node\TableNode $table

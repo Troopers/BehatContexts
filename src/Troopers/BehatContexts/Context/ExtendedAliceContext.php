@@ -2,26 +2,24 @@
 
 namespace Troopers\BehatContexts\Context;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMInvalidArgumentException;
-use Doctrine\ORM\EntityManager;
 use Knp\FriendlyContexts\Context\AliceContext;
 
 /**
- * Class ExtendedAliceContext
- *
- * @package Troopers\BehatContexts\Context
+ * Class ExtendedAliceContext.
  */
-class ExtendedAliceContext extends AliceContext {
-
+class ExtendedAliceContext extends AliceContext
+{
     /**
      * @return array
      */
     private function getPersistableClasses()
     {
-        $persistable = array();
-        $metadatas   = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
+        $persistable = [];
+        $metadatas = $this->getEntityManager()->getMetadataFactory()->getAllMetadata();
 
         foreach ($metadatas as $metadata) {
             if (isset($metadata->isEmbeddedClass) && $metadata->isEmbeddedClass) {
@@ -33,10 +31,12 @@ class ExtendedAliceContext extends AliceContext {
 
         return $persistable;
     }
+
     /**
      * @param $loader
      * @param $fixtures
      * @param $files
+     *
      * @throws OptimisticLockException
      * @throws ORMInvalidArgumentException
      */
@@ -49,8 +49,7 @@ class ExtendedAliceContext extends AliceContext {
             if (in_array($id, $files, null)) {
                 foreach ($loader->load($fixture) as $object) {
                     if (in_array(get_class($object), $persistable, null)) {
-                        if(method_exists($object, 'getId') && $object->getId())
-                        {
+                        if (method_exists($object, 'getId') && $object->getId()) {
                             $metadata = $em->getClassMetadata(get_class($object));
                             $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
                         }

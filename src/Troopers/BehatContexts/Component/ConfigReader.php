@@ -7,11 +7,13 @@ use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
-class ConfigReader {
+class ConfigReader
+{
     private $rootDir;
 
     /**
      * ConfigReader constructor.
+     *
      * @param $rootDir
      */
     public function __construct($rootDir)
@@ -23,20 +25,20 @@ class ConfigReader {
      * @param $path
      * @param $key
      *
-     * @return array
      * @throws \RuntimeException
      * @throws \Symfony\Component\Yaml\Exception\ParseException
      * @throws \InvalidArgumentException
      * @throws \Symfony\Component\Filesystem\Exception\FileNotFoundException
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     *
+     * @return array
      */
     public function load($path, $key)
     {
         $finder = new Finder();
         $finder->files()->in($this->rootDir.'/'.$path);
         $result = [];
-        if(!$finder->count())
-        {
+        if (!$finder->count()) {
             throw new FileNotFoundException('No configuration found');
         }
         // read yaml config files
@@ -49,18 +51,16 @@ class ConfigReader {
                     'The file located in '.$configFile.' has no config value "'.$key.'"'
                 );
             }
-            foreach ($config[$key] as $index => $value)
-            {
-                if(array_key_exists($index, $result))
-                {
+            foreach ($config[$key] as $index => $value) {
+                if (array_key_exists($index, $result)) {
                     throw new InvalidConfigurationException(sprintf('Duplicate key "%s" for configurations files located in %s', $index, $configFile));
                 }
-                if($value !== null)
-                {
+                if ($value !== null) {
                     $result[$index] = $value;
                 }
             }
         }
+
         return $result;
     }
 }

@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: charlie
  * Date: 03/01/2017
- * Time: 17:24
+ * Time: 17:24.
  */
 
 namespace Troopers\BehatContexts\Tests\Mail;
-
 
 use Alex\MailCatcher\Tests\AbstractTest;
 use Troopers\BehatContexts\Component\ConfigTranslator;
@@ -17,35 +16,30 @@ use Troopers\BehatContexts\Mail\MailChecker;
 
 class MailCheckerTest extends AbstractTest
 {
-
-    /**
-     *
-     */
     public function testBuild()
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Mail to test')
-            ->setFrom('sender@sender.sender' )
+            ->setFrom('sender@sender.sender')
             ->setTo('to@to.to')
-            ->setBody('Content')
-        ;
+            ->setBody('Content');
         $this->sendMessage($message);
 
         $mailChecker = $this->getMailChecker();
         $this->invokeMethod($mailChecker, 'build',
             [
                 [
-                    'to' => '%user%',
-                    'from' => 'sender@sender.sender',
-                    'subject' => 'Mail to %context%',
+                    'to'       => '%user%',
+                    'from'     => 'sender@sender.sender',
+                    'subject'  => 'Mail to %context%',
                     'contents' => [
-                        'strings' => ['Content']
-                    ]
+                        'strings' => ['Content'],
+                    ],
                 ],
                 [
                     ['user', 'to@to.to'],
                     ['context', 'test'],
-                ]
+                ],
             ]);
     }
 
@@ -53,10 +47,9 @@ class MailCheckerTest extends AbstractTest
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Mail to test')
-            ->setFrom('sender@sender.sender' )
+            ->setFrom('sender@sender.sender')
             ->setTo('to@to.to')
-            ->setBody('Content')
-        ;
+            ->setBody('Content');
         $this->sendMessage($message);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -66,28 +59,26 @@ class MailCheckerTest extends AbstractTest
         $this->invokeMethod($mailChecker, 'build',
             [
                 [
-                    'to' => '%user%',
-                    'from' => 'sender@sender.sender',
-                    'subject' => 'Mail to %context%',
+                    'to'       => '%user%',
+                    'from'     => 'sender@sender.sender',
+                    'subject'  => 'Mail to %context%',
                     'contents' => [
-                        'strings' => ['Wrong Content']
-                    ]
+                        'strings' => ['Wrong Content'],
+                    ],
                 ],
                 [
-                    ['user', 'to@to.to']
-                ]
+                    ['user', 'to@to.to'],
+                ],
             ]);
-
     }
 
     public function testMissingBuildContent()
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Mail to test')
-            ->setFrom('sender@sender.sender' )
+            ->setFrom('sender@sender.sender')
             ->setTo('to@to.to')
-            ->setBody('Content')
-        ;
+            ->setBody('Content');
         $this->sendMessage($message);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -96,29 +87,27 @@ class MailCheckerTest extends AbstractTest
         $this->invokeMethod($mailChecker, 'build',
             [
                 [
-                    'to' => '%user%',
-                    'from' => 'sender@sender.sender',
-                    'subject' => 'Mail to %context%',
+                    'to'       => '%user%',
+                    'from'     => 'sender@sender.sender',
+                    'subject'  => 'Mail to %context%',
                     'contents' => [
-                        'strings' => ['Wrong Content']
-                    ]
+                        'strings' => ['Wrong Content'],
+                    ],
                 ],
                 [
                     ['user', 'to@to.to'],
-                    ['context', 'test']
-                ]
+                    ['context', 'test'],
+                ],
             ]);
-
     }
 
     public function testFindMails()
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Mail to test')
-            ->setFrom('sender@sender.sender' )
+            ->setFrom('sender@sender.sender')
             ->setTo('to@to.to')
-            ->setBody('Content')
-        ;
+            ->setBody('Content');
         $this->sendMessage($message);
 
         $mailChecker = $this->getMailChecker();
@@ -126,10 +115,10 @@ class MailCheckerTest extends AbstractTest
             $this->invokeMethod($mailChecker, 'findMail',
             [
                 [
-                    'to' => 'to@to.to',
-                    'from' => 'sender@sender.sender',
+                    'to'      => 'to@to.to',
+                    'from'    => 'sender@sender.sender',
                     'subject' => 'Mail to test',
-                ]
+                ],
             ])
         );
     }
@@ -138,10 +127,9 @@ class MailCheckerTest extends AbstractTest
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Mail to test')
-            ->setFrom('sender@sender.sender' )
+            ->setFrom('sender@sender.sender')
             ->setTo('to@to.to')
-            ->setBody('Content')
-        ;
+            ->setBody('Content');
         $this->sendMessage($message);
 
         $mailChecker = $this->getMailChecker();
@@ -153,10 +141,10 @@ class MailCheckerTest extends AbstractTest
         $this->invokeMethod($mailChecker, 'findMail',
         [
             [
-                'to' => 'to@to.to',
-                'from' => 'wrongsender@sender.sender',
+                'to'      => 'to@to.to',
+                'from'    => 'wrongsender@sender.sender',
                 'subject' => 'Mail to test',
-            ]
+            ],
         ]);
     }
 
@@ -172,17 +160,15 @@ class MailCheckerTest extends AbstractTest
         $this->sendMessage($message);
         $mailChecker = $this->getMailChecker();
         $this->assertEquals(
-             $href
-            ,$mailChecker->getLink(
+             $href, $mailChecker->getLink(
                 [
-                    'to' => 'to@to.to',
-                    'from' => 'sender@sender.sender',
-                    'subject' => 'Mail to test',
-                    'contents' => []
+                    'to'       => 'to@to.to',
+                    'from'     => 'sender@sender.sender',
+                    'subject'  => 'Mail to test',
+                    'contents' => [],
                 ], [], $link
             )
         );
-
     }
 
     public function swiftMessageWithLinkProvider()
@@ -192,25 +178,25 @@ class MailCheckerTest extends AbstractTest
             [
                 \Swift_Message::newInstance()
                     ->setSubject('Mail to test')
-                    ->setFrom('sender@sender.sender' )
+                    ->setFrom('sender@sender.sender')
                     ->setTo('to@to.to')
                     ->setBody('<p>Content \n <a href="link1" id="test_link">Test Link</a></p>', 'text/html'),
                 'Test Link',
-                'link1'
+                'link1',
             ],
             [
                 \Swift_Message::newInstance()
                     ->setSubject('Mail to test')
-                    ->setFrom('sender@sender.sender' )
+                    ->setFrom('sender@sender.sender')
                     ->setTo('to@to.to')
                     ->setBody('<p>Content \n <a href="link2" id="test_link">Test Link</a></p>', 'text/html'),
                 'test_link',
-                'link2'
+                'link2',
             ],
         ];
     }
 
-    private function invokeMethod(&$object, $methodName, array $parameters = array())
+    private function invokeMethod(&$object, $methodName, array $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
@@ -231,11 +217,12 @@ class MailCheckerTest extends AbstractTest
               $this->returnValueMap(
                   [
                       [
-                          'strings',  new StringValidator()
-                      ]
+                          'strings',  new StringValidator(),
+                      ],
                   ]
               )
             );
+
         return new MailChecker(
             new ConfigTranslator(),
             $mailConfig,
