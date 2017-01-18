@@ -2,7 +2,8 @@
 
 namespace Troopers\BehatContexts\ContentValidator;
 
-class StringValidator implements ContentValidatorInterface {
+class StringValidator implements ContentValidatorInterface
+{
     /**
      * @param mixed $value
      *
@@ -10,8 +11,7 @@ class StringValidator implements ContentValidatorInterface {
      */
     public function supports($value)
     {
-        if (!is_string($value))
-        {
+        if (!is_string($value)) {
             throw new ContentValidatorException(sprintf('Value given (%s) is not a string', json_encode($value)));
         }
     }
@@ -20,8 +20,9 @@ class StringValidator implements ContentValidatorInterface {
      * @param string $value
      * @param string $content
      *
-     * @return mixed
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     public function valid($value, $content = '')
     {

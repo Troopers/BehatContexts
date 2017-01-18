@@ -10,13 +10,15 @@ use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceExce
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
- * Pass to permit to alias entity
+ * Pass to permit to alias entity.
  */
 class MailPass implements CompilerPassInterface
 {
     /**
-     * use TroopersEntityHydrator to replace friendly.entity.hydrator
+     * use TroopersEntityHydrator to replace friendly.entity.hydrator.
+     *
      * @param ContainerBuilder $container
+     *
      * @throws ExtensionInitializationException
      * @throws ServiceNotFoundException
      * @throws InvalidArgumentException
@@ -25,8 +27,7 @@ class MailPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if($container->hasDefinition('troopers.behatcontexts.mail.parser'))
-        {
+        if ($container->hasDefinition('troopers.behatcontexts.mail.parser')) {
             $mailParser = $container->get('troopers.behatcontexts.mail.parser');
             $mailParser->loadMails();
         }

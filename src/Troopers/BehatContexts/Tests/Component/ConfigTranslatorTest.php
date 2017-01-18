@@ -5,9 +5,7 @@ namespace Troopers\BehatContexts\Tests\Component;
 use Troopers\BehatContexts\Component\ConfigTranslator;
 
 /**
- * Class ConfigTranslatorTest
- *
- * @package Troopers\BehatContexts\Tests\Component
+ * Class ConfigTranslatorTest.
  */
 class ConfigTranslatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,15 +28,14 @@ class ConfigTranslatorTest extends \PHPUnit_Framework_TestCase
         $configTranslator = new ConfigTranslator();
         $parameters = [
             ['key1', 'value1'],
-            ['key2', 'value2']
+            ['key2', 'value2'],
         ];
         $configTranslator->rebuildTranslationKeys($parameters, '%', '%');
         $this->assertEquals(
             [
                 '%key1%' => 'value1',
-                '%key2%' => 'value2'
-            ]
-            , $parameters);
+                '%key2%' => 'value2',
+            ], $parameters);
     }
 
     /**
@@ -49,7 +46,7 @@ class ConfigTranslatorTest extends \PHPUnit_Framework_TestCase
         $configTranslator = new ConfigTranslator();
         $parameters = [
             ['key1', 'value1'],
-            ['key2']
+            ['key2'],
         ];
         $configTranslator->rebuildTranslationKeys($parameters, '%', '%');
     }
@@ -59,10 +56,10 @@ class ConfigTranslatorTest extends \PHPUnit_Framework_TestCase
         $configTranslator = new ConfigTranslator();
         $missingTranslations = $configTranslator->getMissingTranslations(
             [
-                'test' => 'va%lue',
+                'test'  => 'va%lue',
                 'test2' => [
-                    'test3' => 'value2'
-                ]
+                    'test3' => 'value2',
+                ],
             ],
             '%',
             '%'
@@ -70,11 +67,11 @@ class ConfigTranslatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([], $missingTranslations);
         $missingTranslations = $configTranslator->getMissingTranslations(
             [
-                'test' => '%val%ue',
+                'test'  => '%val%ue',
                 'test2' => [
-                    'test3' => '%val%ue2'
+                    'test3' => '%val%ue2',
                 ],
-                'test4' => 'bla%bla%bla'
+                'test4' => 'bla%bla%bla',
             ],
             '%',
             '%'
@@ -85,65 +82,60 @@ class ConfigTranslatorTest extends \PHPUnit_Framework_TestCase
     public function translationsProvider()
     {
         return [
-            ['simple translation' =>
-                [
-                    'index' => [
-                        'test' => '%value%'
-                    ]
-                ],
-                ['%value%' => 'phpunit'],
-                [
-                    'index' => [
-                        'test' => 'phpunit'
-                    ]
-                ]
-            ],
-            ['recursive translation' =>
-                [
-                    'index' => [
-                        'test' => [
-                            'test_test' =>  '%value%'
-                        ]
-                    ]
-                ],
-                ['%value%' => 'phpunit'],
-                [
-                    'index' => [
-                        'test' => [
-                            'test_test' =>  'phpunit'
-                        ]
-                    ]
-                ],
-            ],
-            ['multiple translation' =>
-                [
+            ['simple translation' => [
                     'index' => [
                         'test' => '%value%',
-                        'test2' => '%value2%'
-                    ]
+                    ],
+                ],
+                ['%value%' => 'phpunit'],
+                [
+                    'index' => [
+                        'test' => 'phpunit',
+                    ],
+                ],
+            ],
+            ['recursive translation' => [
+                    'index' => [
+                        'test' => [
+                            'test_test' => '%value%',
+                        ],
+                    ],
+                ],
+                ['%value%' => 'phpunit'],
+                [
+                    'index' => [
+                        'test' => [
+                            'test_test' => 'phpunit',
+                        ],
+                    ],
+                ],
+            ],
+            ['multiple translation' => [
+                    'index' => [
+                        'test'  => '%value%',
+                        'test2' => '%value2%',
+                    ],
                 ],
                 ['%value%' => 'first', '%value2%' => 'second'],
                 [
                     'index' => [
-                        'test' => 'first',
-                        'test2' => 'second'
-                    ]
-                ]
+                        'test'  => 'first',
+                        'test2' => 'second',
+                    ],
+                ],
             ],
-            ['mixed translation' =>
-                [
+            ['mixed translation' => [
                     'index' => [
-                        'test' => 'tetsu  jssfdsf o,%value% sfcsibn49451'
-                    ]
+                        'test' => 'tetsu  jssfdsf o,%value% sfcsibn49451',
+                    ],
                 ],
                 ['%value%' => 'phpunit'],
                 [
                     'index' => [
-                        'test' => 'tetsu  jssfdsf o,phpunit sfcsibn49451'
-                    ]
-                ]
+                        'test' => 'tetsu  jssfdsf o,phpunit sfcsibn49451',
+                    ],
+                ],
             ],
-
 
         ];
     }

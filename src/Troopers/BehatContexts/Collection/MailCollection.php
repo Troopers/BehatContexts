@@ -1,13 +1,12 @@
 <?php
+
 namespace Troopers\BehatContexts\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Class MailCollection
- *
- * @package Troopers\BehatContexts\Collection
+ * Class MailCollection.
  */
-class MailCollection extends ArrayCollection {
-
+class MailCollection extends ArrayCollection
+{
 }

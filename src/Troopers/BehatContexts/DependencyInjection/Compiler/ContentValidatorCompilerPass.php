@@ -3,16 +3,15 @@
 namespace Troopers\BehatContexts\DependencyInjection\Compiler;
 
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * Class ContentValidatorCompilerPass
- *
- * @package Troopers\BehatContexts\DependencyInjection\Compiler
+ * Class ContentValidatorCompilerPass.
  */
-class ContentValidatorCompilerPass implements CompilerPassInterface{
+class ContentValidatorCompilerPass implements CompilerPassInterface
+{
     /**
      * You can modify the container here before it is dumped to PHP code.
      *
@@ -31,14 +30,13 @@ class ContentValidatorCompilerPass implements CompilerPassInterface{
         foreach ($taggedServices as $id => $tags) {
             /** @var array $tags */
             foreach ($tags as $attributes) {
-                if (!array_key_exists('contentType', $attributes))
-                {
-                   throw new InvalidConfigurationException(sprintf('Missing contentType attribute for %s', $id));
+                if (!array_key_exists('contentType', $attributes)) {
+                    throw new InvalidConfigurationException(sprintf('Missing contentType attribute for %s', $id));
                 }
-                $definition->addMethodCall('addContentValidator', array(
+                $definition->addMethodCall('addContentValidator', [
                     new Reference($id),
-                    $attributes['contentType']
-                ));
+                    $attributes['contentType'],
+                ]);
             }
         }
     }
