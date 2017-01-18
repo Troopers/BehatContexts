@@ -65,6 +65,7 @@ class Extension implements ExtensionInterface
                     ->canBeEnabled()
                 ->end()
                 ->arrayNode('mails')
+                    ->prototype('array')
                     ->children()
                         ->scalarNode('path')
                             ->isRequired()
