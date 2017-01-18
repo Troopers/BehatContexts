@@ -7,10 +7,10 @@ use Troopers\BehatContexts\Collection\MailCollection;
 use Troopers\BehatContexts\Component\ConfigReader;
 
 /**
- * Class MailParser
- * @package Troopers\BehatContexts\Parser\Mail
+ * Class MailParser.
  */
-class MailParser {
+class MailParser
+{
     private $reader;
     private $mailsConfig;
     private $mailCollection;
@@ -25,18 +25,14 @@ class MailParser {
     public function __construct(ConfigReader $reader, MailCollection $mailCollection, array $mailsConfig)
     {
         $this->reader = $reader;
-        $this->mailsConfig= $mailsConfig;
+        $this->mailsConfig = $mailsConfig;
         $this->mailCollection = $mailCollection;
     }
 
-    /**
-     *
-     */
     public function loadMails()
     {
         $config = $this->reader->load($this->mailsConfig['path'], $this->mailsConfig['key']);
-        foreach ($config as $eventName => $emailConfig)
-        {
+        foreach ($config as $eventName => $emailConfig) {
             $this->validMailConfig($eventName, $emailConfig);
             $this->mailCollection->set($eventName, $emailConfig);
         }
@@ -49,28 +45,23 @@ class MailParser {
     private function validMailConfig($event, $config)
     {
         $exceptions = [];
-        if(!isset($config['to']))
-        {
+        if (!isset($config['to'])) {
             $exceptions[] = 'Missing configuration for "to"';
-        }elseif(!$config['to']){
+        } elseif (!$config['to']) {
             $exceptions[] = 'Value not found for "to"';
         }
-        if(!isset($config['from']))
-        {
+        if (!isset($config['from'])) {
             $exceptions[] = 'Missing configuration for "from"';
-        }elseif(!$config['from']){
+        } elseif (!$config['from']) {
             $exceptions[] = 'Value not found for "from"';
         }
-        if(!isset($config['subject']))
-        {
+        if (!isset($config['subject'])) {
             $exceptions[] = 'Missing configuration for "subject"';
-        }elseif(!$config['subject']){
+        } elseif (!$config['subject']) {
             $exceptions[] = 'Value not found for "subject"';
         }
-        if(count($exceptions) > 0)
-        {
+        if (count($exceptions) > 0) {
             throw new InvalidConfigurationException(sprintf('Invalid for event Configuration "%s" : %s', $event, implode(', ', $exceptions)));
         }
     }
-
 }

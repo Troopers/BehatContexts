@@ -1,16 +1,15 @@
 <?php
 
 namespace Troopers\BehatContexts\Tests\Component;
+
+use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use org\bovigo\vfs\vfsStream;
 use Symfony\Component\Yaml\Yaml;
 use Troopers\BehatContexts\Component\ConfigReader;
 
 /**
- * Class ConfigReaderTest
- *
- * @package Troopers\BehatContexts\Tests\Component
+ * Class ConfigReaderTest.
  */
 class ConfigReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +26,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
     private $directoryName = 'config_test';
 
     /**
-     * Set up vfs stream driver
+     * Set up vfs stream driver.
      */
     protected function setUp()
     {
@@ -37,7 +36,7 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Close driver
+     * Close driver.
      */
     protected function tearDown()
     {
@@ -57,29 +56,25 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($parsedConfig, $expected);
     }
 
-    /**
-     *
-     */
     public function testReadMultiplesFilesConfig()
     {
         $configs = [
             [
                 'test_key' => [
                     'arg1' => [
-                        'test' => 'value'
-                    ]
-                ]
+                        'test' => 'value',
+                    ],
+                ],
             ],
             [
                 'test_key' => [
                     'arg2' => [
-                        'test2' => 'value2'
-                    ]
-                ]
-            ]
+                        'test2' => 'value2',
+                    ],
+                ],
+            ],
         ];
-        foreach ($configs as $config)
-        {
+        foreach ($configs as $config) {
             $this->generateConfigFile($config);
         }
         $configReader = new ConfigReader($this->driver->url());
@@ -87,14 +82,15 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($parsedConfig,
             [
                 'arg1' => [
-                    'test' => 'value'
+                    'test' => 'value',
                 ],
                 'arg2' => [
-                    'test2' => 'value2'
-                ]
+                    'test2' => 'value2',
+                ],
             ]
         );
     }
+
     public function testNoConfigFileFound()
     {
         $this->expectException(FileNotFoundException::class);
@@ -103,31 +99,27 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
         );
         $configReader = new ConfigReader($this->driver->url());
         $configReader->load($this->directoryName, 'test_key');
-
     }
 
-    /**
-     **/
     public function testInvalidConfigFile()
     {
         $configs = [
             [
                 'test_key' => [
                     'arg1' => [
-                        'test' => 'value'
-                    ]
-                ]
+                        'test' => 'value',
+                    ],
+                ],
             ],
             [
                 'test_key' => [
                     'arg1' => [
-                        'test2' => 'value2'
-                    ]
-                ]
-            ]
+                        'test2' => 'value2',
+                    ],
+                ],
+            ],
         ];
-        foreach ($configs as $config)
-        {
+        foreach ($configs as $config) {
             $this->generateConfigFile($config);
         }
         $configReader = new ConfigReader($this->driver->url());
@@ -138,21 +130,18 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
         $configReader->load($this->directoryName, 'test_key');
     }
 
-    /**
-     */
     public function testNoConfigDefinedInFile()
     {
         $configs = [
             [
                 'test_key' => [
                     'arg1' => [
-                        'test' => 'value'
-                    ]
-                ]
-            ]
+                        'test' => 'value',
+                    ],
+                ],
+            ],
         ];
-        foreach ($configs as $config)
-        {
+        foreach ($configs as $config) {
             $this->generateConfigFile($config);
         }
         $configReader = new ConfigReader($this->driver->url());
@@ -162,7 +151,6 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
             '/The file located in (\S*).yml has no config value "wrong_key"$/'
         );
         $configReader->load($this->directoryName, 'wrong_key');
-
     }
 
     /**
@@ -171,17 +159,16 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
      */
     private function generateConfigFile($data = null, $filename = '')
     {
-        if($filename === '')
-        {
-            $filename = md5(microtime()) . '.yml';
+        if ($filename === '') {
+            $filename = md5(microtime()).'.yml';
         }
-        if(!$this->driver->hasChild($filename))
-        {
+        if (!$this->driver->hasChild($filename)) {
             $file = vfsStream::newFile($filename);
             $file->setContent(Yaml::dump($data));
             $this->configDirectory->addChild($file);
         }
     }
+
     public function oneFileConfigProvider()
     {
         return [
@@ -189,17 +176,16 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
                 [
                     'test_key' => [
                         'arg1' => [
-                            'test' => 'value'
-                        ]
-                    ]
+                            'test' => 'value',
+                        ],
+                    ],
                 ],
                 [
                     'arg1' => [
-                        'test' => 'value'
-                    ]
+                        'test' => 'value',
+                    ],
                 ],
             ],
         ];
     }
-
 }

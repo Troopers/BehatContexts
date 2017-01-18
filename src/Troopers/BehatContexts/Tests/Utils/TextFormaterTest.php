@@ -2,7 +2,6 @@
 
 namespace Troopers\BehatContexts\Tests\Utils;
 
-
 use Troopers\BehatContexts\Utils\TextFormater;
 
 class TextFormaterTest extends \PHPUnit_Framework_TestCase
@@ -18,6 +17,7 @@ class TextFormaterTest extends \PHPUnit_Framework_TestCase
         $actual = $textFormater->listToArray($list);
         $this->assertEquals($expected, $actual);
     }
+
     public function listToArrayProvider()
     {
         return [
@@ -25,18 +25,19 @@ class TextFormaterTest extends \PHPUnit_Framework_TestCase
                 'test, test2',
                 [
                     'test',
-                    'test2'
-                ]
+                    'test2',
+                ],
             ],
             [
                 'test : value, test2: value2',
                 [
-                    'test' => 'value',
-                    'test2' => 'value2'
-                ]
-            ]
+                    'test'  => 'value',
+                    'test2' => 'value2',
+                ],
+            ],
         ];
     }
+
     public function testInvalidListToArray()
     {
         $textFormater = new TextFormater();

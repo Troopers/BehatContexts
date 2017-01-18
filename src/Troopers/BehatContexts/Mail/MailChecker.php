@@ -1,5 +1,7 @@
 <?php
+
 namespace Troopers\BehatContexts\Mail;
+
 use Alex\MailCatcher\Client;
 use Alex\MailCatcher\Message;
 use Behat\Mink\Selector\NamedSelector;
@@ -8,14 +10,11 @@ use Troopers\BehatContexts\Component\ConfigTranslator;
 use Troopers\BehatContexts\ContentValidator\ContentValidatorInterface;
 use Troopers\BehatContexts\DependencyInjection\Compiler\ContentValidatorChain;
 
-
 /**
- * Class MailChecker
- *
- * @package Troopers\BehatContexts\Mail
+ * Class MailChecker.
  */
-class MailChecker {
-
+class MailChecker
+{
     private $configTranslator;
     private $mailConfig;
     private $mailcatcherClient;
@@ -45,11 +44,10 @@ class MailChecker {
      * @throws \RuntimeException
      * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
      */
-    public function check(array $mail = array(), array $values = array())
+    public function check(array $mail = [], array $values = [])
     {
         $this->build($mail, $values);
-        if(isset($mail['CCI']))
-        {
+        if (isset($mail['CCI'])) {
             $this->build(array_merge($mail, ['to' => $mail['CCI']]), $values);
         }
     }
@@ -58,10 +56,11 @@ class MailChecker {
      * @param $mail
      * @param $values
      *
-     * @return mixed
      * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @return mixed
      */
     private function build(array $mail, array $values)
     {
@@ -77,32 +76,27 @@ class MailChecker {
             $this->mailConfig['translation']['lastCharacter']
         );
 
-        if (count($missingTranslations) > 0)
-        {
+        if (count($missingTranslations) > 0) {
             throw new \InvalidArgumentException(
                 'Missing translations : '.implode(', ', $missingTranslations)
             );
-
         }
         $message = $this->findMail([
-            'to' => $mailToTest['to'],
-            'from' => $mailToTest['from'],
-            'subject' => $mailToTest['subject']
+            'to'      => $mailToTest['to'],
+            'from'    => $mailToTest['from'],
+            'subject' => $mailToTest['subject'],
         ]);
         $content = $this->getContent($message);
-        if (isset($mailToTest['contents']) && is_array($mailToTest['contents']) && count($mailToTest['contents']) > 0)
-        {
+        if (isset($mailToTest['contents']) && is_array($mailToTest['contents']) && count($mailToTest['contents']) > 0) {
             /**
-             * @var string $contentValidatorKey
+             * @var string
              * @var array  $contentsToTest
              */
-            foreach ($mailToTest['contents'] as $contentValidatorKey => $contentsToTest)
-            {
+            foreach ($mailToTest['contents'] as $contentValidatorKey => $contentsToTest) {
                 /** @var ContentValidatorInterface $contentValidator */
                 $contentValidator = $this->contentValidatorChain->getContentValidator($contentValidatorKey);
 
-                foreach ($contentsToTest as $value)
-                {
+                foreach ($contentsToTest as $value) {
                     $contentValidator->supports($value);
                     $contentValidator->valid($value, $content);
                 }
@@ -115,10 +109,12 @@ class MailChecker {
     /**
      * @param array $criterias
      *
-     * @return \Alex\MailCatcher\Message|null
      * @throws \InvalidArgumentException
+     *
+     * @return \Alex\MailCatcher\Message|null
      */
-    private function findMail(array $criterias){
+    private function findMail(array $criterias)
+    {
 
         //get mail with "to", "from" and "subject"
 
@@ -135,8 +131,8 @@ class MailChecker {
                     $recipients .= $recipient->getEmail().' ';
                 }
                 $currentMails[] = json_encode([
-                    'to' => trim($recipients),
-                    'from' => $message->getSender()->getEmail(),
+                    'to'      => trim($recipients),
+                    'from'    => $message->getSender()->getEmail(),
                     'subject' => $message->getSubject(),
                 ]);
             }
@@ -146,15 +142,17 @@ class MailChecker {
             ], $currentMails);
             throw new \InvalidArgumentException(implode("\n", $exceptions));
         }
+
         return $message;
     }
 
     /**
      * @param \Alex\MailCatcher\Message $message
      *
-     * @return string
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
+     *
+     * @return string
      */
     private function getContent(Message $message)
     {
@@ -173,6 +171,7 @@ class MailChecker {
         if (true === strpos($content, '</')) {
             throw new \InvalidArgumentException('Found mark up on email');
         }
+
         return $content;
     }
 
@@ -181,18 +180,20 @@ class MailChecker {
      * @param array $values
      * @param       $link
      *
-     * @return null|string
      * @throws \Troopers\BehatContexts\ContentValidator\ContentValidatorException
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @return null|string
      */
-    public function getLink(array $mail = array(), array $values = array(), $link)
+    public function getLink(array $mail, array $values, $link)
     {
         $selector = new NamedSelector();
         $xpath = $selector->translateToXPath(['link', $link]);
         $content = $this->build($mail, $values);
         $crawler = new Crawler($content);
         $mailLink = $crawler->filterXPath($xpath);
+
         return $mailLink->attr('href');
     }
 }

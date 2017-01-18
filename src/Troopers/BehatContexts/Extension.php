@@ -10,21 +10,22 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Troopers\BehatContexts\DependencyInjection\Compiler;
 
-
 /**
- * Class Extension
- * @package Troopers\BehatContexts
+ * Class Extension.
  */
 class Extension implements ExtensionInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function initialize(ExtensionManager $extensionManager){}
+    public function initialize(ExtensionManager $extensionManager)
+    {
+    }
 
     /**
      * @param ContainerBuilder $container
-     * @param array $config
+     * @param array            $config
+     *
      * @throws \Exception
      */
     public function load(ContainerBuilder $container, array $config)
@@ -33,22 +34,18 @@ class Extension implements ExtensionInterface
         $parameters = [];
         $container->addCompilerPass(new Compiler\ContentValidatorCompilerPass());
         $this->buildParameters('troopers.behatcontexts', $parameters, $config);
-        foreach ($parameters as $name => $parameter)
-        {
+        foreach ($parameters as $name => $parameter) {
             $container->setParameter($name, $parameter);
         }
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/services'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/services'));
         $loader->load('core.yml');
 
-
-        if($config['alias_entity']['enabled'])
-        {
+        if ($config['alias_entity']['enabled']) {
             $container->addCompilerPass(new Compiler\AliasEntityPass());
         }
         $container->addCompilerPass(new Compiler\ExtendedTableNodePass());
-        if($config['mails'])
-        {
+        if ($config['mails']) {
             $loader->load('mail.yml');
             $container->addCompilerPass(new Compiler\MailPass());
         }
@@ -89,8 +86,7 @@ class Extension implements ExtensionInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -132,7 +128,6 @@ class Extension implements ExtensionInterface
     {
         foreach ($array as $key => $value) {
             if (is_string($key)) {
-
                 return true;
             }
         }

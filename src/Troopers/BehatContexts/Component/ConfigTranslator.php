@@ -1,20 +1,19 @@
 <?php
+
 namespace Troopers\BehatContexts\Component;
 
 /**
- * Class ConfigTranslator
- *
- * @package Troopers\BehatContexts\Component
+ * Class ConfigTranslator.
  */
-class ConfigTranslator {
+class ConfigTranslator
+{
     /**
      * @param array $config
      *
      * @return array
      */
-    public function getMissingTranslations(array $config = array(), $firstCharacter, $lastCharacter)
+    public function getMissingTranslations(array $config, $firstCharacter, $lastCharacter)
     {
-
         $arguments = [];
         //find string that need to be replaced
         foreach ($config as $property) {
@@ -37,7 +36,7 @@ class ConfigTranslator {
      *
      * @return array
      */
-    public function translate(array $config = array(), array $parameters = array())
+    public function translate(array $config = [], array $parameters = [])
     {
         $keys = array_keys($parameters);
         $values = array_values($parameters);
@@ -54,17 +53,17 @@ class ConfigTranslator {
     }
 
     /**
-     * @param array $parameters         ['translationKey' => $translationValue]
+     * @param array $parameters     ['translationKey' => $translationValue]
      * @param       $firstCharacter
      * @param       $lastCharacter
+     *
      * @throws \InvalidArgumentException
      */
     public function rebuildTranslationKeys(array &$parameters, $firstCharacter, $lastCharacter)
     {
         $newParameters = [];
         foreach ($parameters as $parameter) {
-            if(!is_array($parameter) || count($parameter) !== 2)
-            {
+            if (!is_array($parameter) || count($parameter) !== 2) {
                 throw new \InvalidArgumentException('Parameters given for translation does not match with [0] => \'translationKey\', [1] => $translationValue');
             }
             $newParameters[$firstCharacter.$parameter[0].$lastCharacter] = $parameter[1];

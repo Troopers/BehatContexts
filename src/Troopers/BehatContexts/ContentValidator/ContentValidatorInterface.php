@@ -2,7 +2,8 @@
 
 namespace Troopers\BehatContexts\ContentValidator;
 
-interface ContentValidatorInterface {
+interface ContentValidatorInterface
+{
     /**
      * @param mixed  $value
      * @param string $content
@@ -13,7 +14,6 @@ interface ContentValidatorInterface {
 
     /**
      * @param mixed $value
-     *
      */
     public function supports($value);
 }
