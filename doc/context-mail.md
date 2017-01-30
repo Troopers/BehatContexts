@@ -3,14 +3,16 @@
 ## Examples
 
 behat.yml
+
 ```yaml
     Troopers\BehatContexts\Extension:
         mails:
             path: "features/mailconfig"
             key: acme_emails
-``
+```
 
-```features/mailconfig/testconfig.yml```
+features/mailconfig/testconfig.yml
+
 ```yaml
 acme_emails:
     SIMPLE_EMAIL:
