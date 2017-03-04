@@ -5,9 +5,7 @@ namespace Troopers\BehatContexts\Context;
 use Knp\FriendlyContexts\Context\MinkContext;
 
 /**
- * Class ExtendedMinkContext
- *
- * @package Troopers\BehatContexts\Context
+ * Class ExtendedMinkContext.
  */
 class ExtendedMinkContext extends MinkContext
 {

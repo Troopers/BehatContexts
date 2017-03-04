@@ -2,12 +2,12 @@
 
 namespace Troopers\BehatContexts\Context;
 
-use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 
 /**
  * This trait implements spin methods for ajax navigation.
+ *
  * @link http://docs.behat.org/en/v2.5/cookbook/using_spin_functions.html
  */
 trait SpinMinkContextTrait
@@ -61,26 +61,27 @@ trait SpinMinkContextTrait
 
     /**
      * {@inheritdoc}
+     *
      * @param $page
      * @Then /^(?:|I )should be on "(?P<page>[^"]+)"$/
      */
     public function assertPageAddress($page)
     {
         $this->spin(function ($context) use ($page) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->addressEquals($this->locatePath($page));
         });
     }
 
     /**
-     *
      * {@inheritdoc}
+     *
      * @Then /^(?:|I )should be on (?:|the )homepage$/
      */
     public function assertHomepage()
     {
         $this->spin(function ($context) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->addressEquals($this->locatePath('/'));
         });
     }
@@ -93,7 +94,7 @@ trait SpinMinkContextTrait
     public function assertUrlRegExp($pattern)
     {
         $this->spin(function ($context) use ($pattern) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->addressMatches($this->fixStepArgument($pattern));
         });
     }
@@ -106,7 +107,7 @@ trait SpinMinkContextTrait
     public function assertResponseStatus($code)
     {
         $this->spin(function ($context) use ($code) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->statusCodeEquals($code);
         });
     }
@@ -119,7 +120,7 @@ trait SpinMinkContextTrait
     public function assertResponseStatusIsNot($code)
     {
         $this->spin(function ($context) use ($code) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->statusCodeNotEquals($code);
         }, 50);
     }
@@ -132,7 +133,7 @@ trait SpinMinkContextTrait
     public function assertPageContainsText($text)
     {
         $this->spin(function ($context) use ($text) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->pageTextContains($this->fixStepArgument($text));
         });
     }
@@ -145,7 +146,7 @@ trait SpinMinkContextTrait
     public function assertPageNotContainsText($text)
     {
         $this->spin(function ($context) use ($text) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->pageTextNotContains($this->fixStepArgument($text));
         }, 50);
     }
@@ -158,7 +159,7 @@ trait SpinMinkContextTrait
     public function assertPageMatchesText($pattern)
     {
         $this->spin(function ($context) use ($pattern) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->pageTextMatches($this->fixStepArgument($pattern));
         });
     }
@@ -171,7 +172,7 @@ trait SpinMinkContextTrait
     public function assertPageNotMatchesText($pattern)
     {
         $this->spin(function ($context) use ($pattern) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->pageTextNotMatches($this->fixStepArgument($pattern));
         }, 50);
     }
@@ -184,7 +185,7 @@ trait SpinMinkContextTrait
     public function assertResponseContains($text)
     {
         $this->spin(function ($context) use ($text) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->responseContains($this->fixStepArgument($text));
         });
     }
@@ -197,7 +198,7 @@ trait SpinMinkContextTrait
     public function assertResponseNotContains($text)
     {
         $this->spin(function ($context) use ($text) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->responseNotContains($this->fixStepArgument($text));
         }, 50);
     }
@@ -211,7 +212,7 @@ trait SpinMinkContextTrait
     public function assertElementContainsText($element, $text)
     {
         $this->spin(function ($context) use ($element, $text) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementTextContains('css', $element, $this->fixStepArgument($text));
         });
     }
@@ -225,7 +226,7 @@ trait SpinMinkContextTrait
     public function assertElementNotContainsText($element, $text)
     {
         $this->spin(function ($context) use ($element, $text) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementTextNotContains('css', $element, $this->fixStepArgument($text));
         }, 50);
     }
@@ -239,7 +240,7 @@ trait SpinMinkContextTrait
     public function assertElementContains($element, $value)
     {
         $this->spin(function ($context) use ($element, $value) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementContains('css', $element, $this->fixStepArgument($value));
         });
     }
@@ -253,7 +254,7 @@ trait SpinMinkContextTrait
     public function assertElementNotContains($element, $value)
     {
         $this->spin(function ($context) use ($element, $value) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementNotContains('css', $element, $this->fixStepArgument($value));
         }, 50);
     }
@@ -266,7 +267,7 @@ trait SpinMinkContextTrait
     public function assertElementOnPage($element)
     {
         $this->spin(function ($context) use ($element) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementExists('css', $element);
         });
     }
@@ -279,7 +280,7 @@ trait SpinMinkContextTrait
     public function assertElementNotOnPage($element)
     {
         $this->spin(function ($context) use ($element) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementNotExists('css', $element);
         }, 50);
     }
@@ -325,7 +326,7 @@ trait SpinMinkContextTrait
     public function assertNumElements($num, $element)
     {
         $this->spin(function ($context) use ($num, $element) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->elementsCount('css', $element, intval($num));
         });
     }
@@ -340,7 +341,7 @@ trait SpinMinkContextTrait
     public function assertCheckboxChecked($checkbox)
     {
         $this->spin(function ($context) use ($checkbox) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->checkboxChecked($this->fixStepArgument($checkbox));
         });
     }
@@ -356,7 +357,7 @@ trait SpinMinkContextTrait
     public function assertCheckboxNotChecked($checkbox)
     {
         $this->spin(function ($context) use ($checkbox) {
-            /** @var MinkContext $context */
+            /* @var MinkContext $context */
             $context->assertSession()->checkboxNotChecked($this->fixStepArgument($checkbox));
         }, 50);
     }
