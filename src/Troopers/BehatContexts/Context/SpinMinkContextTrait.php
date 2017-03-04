@@ -30,7 +30,7 @@ trait SpinMinkContextTrait
      *
      * @return bool
      */
-    protected function spin(callable $lambda, $data = null, $maxIterations = 100, $delay = 100000, $context = null)
+    protected function spin(callable $lambda, $maxIterations = 100, $delay = 100000, $context = null)
     {
         if (null === $context) {
             if ($this->minkContext instanceof MinkContext) {
@@ -44,19 +44,18 @@ trait SpinMinkContextTrait
             }
         }
 
-        $failedExceptions = [];
+        $e = new \Exception();
         for ($i = 0; $i < $maxIterations; $i++) {
             try {
-                if ($lambda($context, $data)) {
+                if ($lambda($context)) {
                     return true;
                 }
-            } catch (\Exception $e) { // Gather unique exceptions
-                $failedExceptions[$e->getMessage()] = $e->getMessage();
+            } catch (\Exception $e) {
+                usleep($delay);
             }
-            usleep($delay);
         }
 
-        return false;
+        throw $e;
     }
 
     /**
@@ -70,6 +69,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($page) {
             /* @var MinkContext $context */
             $context->assertSession()->addressEquals($this->locatePath($page));
+
+            return true;
         });
     }
 
@@ -83,6 +84,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) {
             /* @var MinkContext $context */
             $context->assertSession()->addressEquals($this->locatePath('/'));
+
+            return true;
         });
     }
 
@@ -96,6 +99,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($pattern) {
             /* @var MinkContext $context */
             $context->assertSession()->addressMatches($this->fixStepArgument($pattern));
+
+            return true;
         });
     }
 
@@ -109,6 +114,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($code) {
             /* @var MinkContext $context */
             $context->assertSession()->statusCodeEquals($code);
+
+            return true;
         });
     }
 
@@ -122,6 +129,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($code) {
             /* @var MinkContext $context */
             $context->assertSession()->statusCodeNotEquals($code);
+
+            return true;
         }, 50);
     }
 
@@ -132,9 +141,11 @@ trait SpinMinkContextTrait
      */
     public function assertPageContainsText($text)
     {
-        $this->spin(function ($context) use ($text) {
+        return $this->spin(function ($context) use ($text) {
             /* @var MinkContext $context */
             $context->assertSession()->pageTextContains($this->fixStepArgument($text));
+
+            return true;
         });
     }
 
@@ -148,6 +159,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($text) {
             /* @var MinkContext $context */
             $context->assertSession()->pageTextNotContains($this->fixStepArgument($text));
+
+            return true;
         }, 50);
     }
 
@@ -161,6 +174,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($pattern) {
             /* @var MinkContext $context */
             $context->assertSession()->pageTextMatches($this->fixStepArgument($pattern));
+
+            return true;
         });
     }
 
@@ -174,6 +189,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($pattern) {
             /* @var MinkContext $context */
             $context->assertSession()->pageTextNotMatches($this->fixStepArgument($pattern));
+
+            return true;
         }, 50);
     }
 
@@ -187,6 +204,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($text) {
             /* @var MinkContext $context */
             $context->assertSession()->responseContains($this->fixStepArgument($text));
+
+            return true;
         });
     }
 
@@ -200,6 +219,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($text) {
             /* @var MinkContext $context */
             $context->assertSession()->responseNotContains($this->fixStepArgument($text));
+
+            return true;
         }, 50);
     }
 
@@ -214,6 +235,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($element, $text) {
             /* @var MinkContext $context */
             $context->assertSession()->elementTextContains('css', $element, $this->fixStepArgument($text));
+
+            return true;
         });
     }
 
@@ -228,6 +251,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($element, $text) {
             /* @var MinkContext $context */
             $context->assertSession()->elementTextNotContains('css', $element, $this->fixStepArgument($text));
+
+            return true;
         }, 50);
     }
 
@@ -242,6 +267,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($element, $value) {
             /* @var MinkContext $context */
             $context->assertSession()->elementContains('css', $element, $this->fixStepArgument($value));
+
+            return true;
         });
     }
 
@@ -256,6 +283,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($element, $value) {
             /* @var MinkContext $context */
             $context->assertSession()->elementNotContains('css', $element, $this->fixStepArgument($value));
+
+            return true;
         }, 50);
     }
 
@@ -269,6 +298,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($element) {
             /* @var MinkContext $context */
             $context->assertSession()->elementExists('css', $element);
+
+            return true;
         });
     }
 
@@ -282,6 +313,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($element) {
             /* @var MinkContext $context */
             $context->assertSession()->elementNotExists('css', $element);
+
+            return true;
         }, 50);
     }
 
@@ -298,6 +331,8 @@ trait SpinMinkContextTrait
             $field = $this->fixStepArgument($field);
             $value = $this->fixStepArgument($value);
             $context->assertSession()->fieldValueEquals($field, $value);
+
+            return true;
         });
     }
 
@@ -314,6 +349,8 @@ trait SpinMinkContextTrait
             $field = $this->fixStepArgument($field);
             $value = $this->fixStepArgument($value);
             $context->assertSession()->fieldValueNotEquals($field, $value);
+
+            return true;
         }, 50);
     }
 
@@ -328,6 +365,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($num, $element) {
             /* @var MinkContext $context */
             $context->assertSession()->elementsCount('css', $element, intval($num));
+
+            return true;
         });
     }
 
@@ -343,6 +382,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($checkbox) {
             /* @var MinkContext $context */
             $context->assertSession()->checkboxChecked($this->fixStepArgument($checkbox));
+
+            return true;
         });
     }
 
@@ -359,6 +400,8 @@ trait SpinMinkContextTrait
         $this->spin(function ($context) use ($checkbox) {
             /* @var MinkContext $context */
             $context->assertSession()->checkboxNotChecked($this->fixStepArgument($checkbox));
+
+            return true;
         }, 50);
     }
 }
