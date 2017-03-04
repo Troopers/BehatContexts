@@ -58,7 +58,7 @@ trait SpinMinkContextTrait
 
         return false;
     }
-    
+
     /**
      * {@inheritdoc}
      * @param $page
