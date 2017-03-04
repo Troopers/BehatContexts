@@ -19,6 +19,7 @@ default:
                 - Troopers\BehatContexts\Context\MailContext
                 - Troopers\BehatContexts\Context\ExtendedAliceContext
                 - Troopers\BehatContexts\Context\ExtendedEntityContext
+                - Troopers\BehatContexts\Context\ExtendedMinkContext
     extensions:
         # ...
         Troopers\BehatContexts\Extension: ~
@@ -28,9 +29,9 @@ Please care of removing
 ```yaml
     - Knp\FriendlyContexts\Context\AliceContext
     - Knp\FriendlyContexts\Context\EntityContext
+    - Knp\FriendlyContexts\Context\MinkContext
 ```
-if you use our friendly extended context
-
+if you use our extended contexts
 
 
 ###Extra configuration
