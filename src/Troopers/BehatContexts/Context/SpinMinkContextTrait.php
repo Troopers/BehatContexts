@@ -22,15 +22,14 @@ trait SpinMinkContextTrait
      *
      * @param callable         $lambda
      * @param null             $data
-     * @param int              $delay         wait 0.1 sec between each spin
-     * @param int              $maxIterations maximum spin iterations, for ex 100*0.1s = 10 sec timeout
+     * @param float            $max
      * @param null|MinkContext $context
      *
      * @throws \Exception
      *
      * @return bool
      */
-    protected function spin(callable $lambda, $maxIterations = 100, $delay = 100000, $context = null)
+    protected function spin(callable $lambda, $max = 10, $context = null)
     {
         if (null === $context) {
             if ($this->minkContext instanceof MinkContext) {
@@ -45,13 +44,15 @@ trait SpinMinkContextTrait
         }
 
         $e = new \Exception();
-        for ($i = 0; $i < $maxIterations; $i++) {
+        $i = 0;
+        while ($i < $max) {
             try {
                 if ($lambda($context)) {
                     return true;
                 }
             } catch (\Exception $e) {
-                usleep($delay);
+                usleep(250000);
+                $i += 1;
             }
         }
 
@@ -131,7 +132,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->statusCodeNotEquals($code);
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -161,7 +162,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->pageTextNotContains($this->fixStepArgument($text));
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -191,7 +192,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->pageTextNotMatches($this->fixStepArgument($pattern));
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -221,7 +222,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->responseNotContains($this->fixStepArgument($text));
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -253,7 +254,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->elementTextNotContains('css', $element, $this->fixStepArgument($text));
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -285,7 +286,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->elementNotContains('css', $element, $this->fixStepArgument($value));
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -315,7 +316,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->elementNotExists('css', $element);
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -351,7 +352,7 @@ trait SpinMinkContextTrait
             $context->assertSession()->fieldValueNotEquals($field, $value);
 
             return true;
-        }, 50);
+        }, 5);
     }
 
     /**
@@ -402,6 +403,6 @@ trait SpinMinkContextTrait
             $context->assertSession()->checkboxNotChecked($this->fixStepArgument($checkbox));
 
             return true;
-        }, 50);
+        }, 5);
     }
 }
