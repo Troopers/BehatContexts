@@ -21,3 +21,17 @@ Feature: My feature
     | firstname | lastname | infos                       |
     | George    | Abitbol  | eyes : blue, hat: of course |
 ```
+
+## Find one object
+
+```gherkin
+  Given the following users:
+    | firstname | lastname |
+    | George    | Abitbol  |
+    | José      | Abitbol  |
+  Then I should find 1 User like:
+    | firstname |
+    | José      |
+  Then I should find 2 User like:
+    | lastname |
+    | Abitbol  |
