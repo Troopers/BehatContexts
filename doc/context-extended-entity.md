@@ -35,3 +35,12 @@ Feature: My feature
   Then I should find 2 User like:
     | lastname |
     | Abitbol  |
+```
+
+## Assert no object
+
+```gherkin
+  Then I should not find User like:
+    | firsname |
+    | V12      |
+```

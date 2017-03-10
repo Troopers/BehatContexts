@@ -52,23 +52,39 @@ class ExtendedEntityContext extends EntityContext
      */
     public function existObjectLikeFollowing($nbr, $name, TableNode $table)
     {
-        $entityName = $this->resolveEntity($name)->getName();
-
         $rows = $table->getRows();
-        $headers = array_shift($rows);
-
-        $row = array_shift($rows);
+        $queryParams = $this->getQueryParams($entityName = $this->resolveEntity($name)->getName(), array_shift($rows), array_shift($rows));
         $objects = $this->getEntityManager()
             ->getRepository($entityName)
-            ->findBy(
-                $this->getQueryParams($entityName, $headers, $row)
-            );
+            ->findBy($queryParams);
 
         if (count($objects) === 0) {
-            throw new \Exception(sprintf("There is not any %s for the following params: %s",$name,  json_encode($this->getQueryParams($entityName, $headers, $row))));
+            throw new \Exception(sprintf('There is not any %s for the following params: %s', $name, json_encode($queryParams)));
         }
         if (count($objects) !== (int) $nbr) {
-            throw new \Exception(sprintf("There is %d %s for the following params %s, %d wanted", count($objects), $name, json_encode($this->getQueryParams($entityName, $headers, $row)), $nbr));
+            throw new \Exception(sprintf('There is %d %s for the following params %s, %d wanted', count($objects), $name, json_encode($queryParams), $nbr));
+        }
+    }
+
+    /**
+     * @Then /^I should not find (.*) like:?$/
+     *
+     * @param $nbr
+     * @param $name
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     */
+    public function notExistObjectLikeFollowing($name, TableNode $table)
+    {
+        $rows = $table->getRows();
+        $queryParams = $this->getQueryParams($entityName = $this->resolveEntity($name)->getName(), array_shift($rows), array_shift($rows));
+        $objects = $this->getEntityManager()
+            ->getRepository($entityName)
+            ->findBy($queryParams);
+
+        if (count($objects) !== 0) {
+            throw new \Exception(sprintf('Found %d %s for the following params: %s', count($objects), $name, json_encode($queryParams)));
         }
     }
 
