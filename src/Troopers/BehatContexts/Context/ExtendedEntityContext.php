@@ -105,7 +105,8 @@ class ExtendedEntityContext extends EntityContext
      *
      * @return object[]
      */
-    protected function findObjectsByParams($name, TableNode $table) {
+    protected function findObjectsByParams($name, TableNode $table)
+    {
         $rows = $table->getRows();
         $entityName = $this->resolveEntity($name)->getName();
         $this->queryParams = $this->getQueryParams($entityName, $rows[0], $rows[1]);
