@@ -12,7 +12,7 @@
         "symfony/dependency-injection": ">=2.7 <3.2",
         "doctrine/dbal": "^2.5",
         "doctrine/orm": "^2.5",
-        "symfony/property-access": "^3.2"
+        "symfony/property-access": ">=2.8"
     },
     "license": "MIT",
     "authors": [
