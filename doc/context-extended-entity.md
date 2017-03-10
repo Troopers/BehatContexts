@@ -6,7 +6,7 @@
 
 ##Truncate Data
 
-You just have to use the tag **@rtruncate-data**, it's faster than reset-schema that drop and re-create the schema of db.
+You just have to use the tag **@truncate-data**, it's faster than reset-schema that drop and re-create the schema of db.
 Truncate-data will only delete datas and not schema.
 ```gherkin
 @truncate-data
@@ -32,7 +32,7 @@ Feature: My feature
   Then I should find 1 User like:
     | firstname |
     | José      |
-  Then I should find 2 User like:
+  Then I should find 2 Users like:
     | lastname |
     | Abitbol  |
 ```
@@ -40,7 +40,10 @@ Feature: My feature
 ## Assert no object
 
 ```gherkin
-  Then I should not find User like:
+  Then I should not find 3 User like:
     | firsname |
-    | V12      |
+    | José     |
+  Then I should not find any User like:
+    | firsname |
+    | Michel   |
 ```

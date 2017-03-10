@@ -7,12 +7,17 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Knp\FriendlyContexts\Context\EntityContext;
+use Knp\FriendlyContexts\Utils\Asserter;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class ExtendedEntityContext.
  */
 class ExtendedEntityContext extends EntityContext
 {
+    /* @var array */
+    protected $queryParams;
+
     /**
      * @BeforeScenario
      *
@@ -50,24 +55,26 @@ class ExtendedEntityContext extends EntityContext
      *
      * @throws \Exception
      */
-    public function existObjectLikeFollowing($nbr, $name, TableNode $table)
+    public function shouldFindObjectsLikeFollowing($nbr, $name, TableNode $table, $method = 'assertEquals')
     {
-        $rows = $table->getRows();
-        $queryParams = $this->getQueryParams($entityName = $this->resolveEntity($name)->getName(), array_shift($rows), array_shift($rows));
-        $objects = $this->getEntityManager()
-            ->getRepository($entityName)
-            ->findBy($queryParams);
-
-        if (count($objects) === 0) {
-            throw new \Exception(sprintf('There is not any %s for the following params: %s', $name, json_encode($queryParams)));
-        }
-        if (count($objects) !== (int) $nbr) {
-            throw new \Exception(sprintf('There is %d %s for the following params %s, %d wanted', count($objects), $name, json_encode($queryParams), $nbr));
-        }
+        $objects = $this->findObjectsByParams($name, $table);
+        /* @var $asserter Asserter */
+        $asserter = $this->getAsserter();
+        $asserter->$method(
+            (int) $nbr,
+            count($objects),
+            sprintf(
+                'There is %d %s for the following params %s, %d wanted',
+                count($objects),
+                $name,
+                json_encode($this->queryParams),
+                $nbr
+            )
+        );
     }
 
     /**
-     * @Then /^I should not find (.*) like:?$/
+     * @Then /^I should not find (\d+) (.*) like:?$/
      *
      * @param $nbr
      * @param $name
@@ -75,17 +82,37 @@ class ExtendedEntityContext extends EntityContext
      *
      * @throws \Exception
      */
-    public function notExistObjectLikeFollowing($name, TableNode $table)
+    public function shouldNotFindObjectsLikeFollowing($nbr, $name, TableNode $table)
     {
-        $rows = $table->getRows();
-        $queryParams = $this->getQueryParams($entityName = $this->resolveEntity($name)->getName(), array_shift($rows), array_shift($rows));
-        $objects = $this->getEntityManager()
-            ->getRepository($entityName)
-            ->findBy($queryParams);
+        $this->shouldFindObjectsLikeFollowing($nbr, $name, $table, 'assertNotEquals');
+    }
 
-        if (count($objects) !== 0) {
-            throw new \Exception(sprintf('Found %d %s for the following params: %s', count($objects), $name, json_encode($queryParams)));
-        }
+    /**
+     * @Then /^I should not find any (.*) like:?$/
+     *
+     * @param $name
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     */
+    public function shouldNotAnyFindObjectsLikeFollowing($name, TableNode $table)
+    {
+        $this->shouldFindObjectsLikeFollowing(0, $name, $table, 'assertEquals');
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @return object[]
+     */
+    protected function findObjectsByParams($name, TableNode $table) {
+        $rows = $table->getRows();
+        $entityName = $this->resolveEntity($name)->getName();
+        $this->queryParams = $this->getQueryParams($entityName, $rows[0], $rows[1]);
+
+        return $this->getEntityManager()
+            ->getRepository($entityName)
+            ->findBy($this->queryParams);
     }
 
     /**
@@ -101,13 +128,11 @@ class ExtendedEntityContext extends EntityContext
 
         $values = array_combine($headers, $row);
         $entity = new $entityName();
-        $this
-            ->getEntityHydrator()
-            ->hydrate($this->getEntityManager(), $entity, $values);
+        $this->getEntityHydrator()->hydrate($this->getEntityManager(), $entity, $values);
 
+        $accessor = PropertyAccess::createPropertyAccessor();
         foreach ($headers as $identifier) {
-            $getter = 'get'.ucfirst($identifier);
-            $identifiersWithValues[$identifier] = $entity->$getter();
+            $identifiersWithValues[$identifier] = $accessor->getValue($entity, $identifier);
         }
 
         return $identifiersWithValues;
