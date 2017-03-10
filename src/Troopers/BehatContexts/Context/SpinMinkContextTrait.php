@@ -3,7 +3,6 @@
 namespace Troopers\BehatContexts\Context;
 
 use Behat\MinkExtension\Context\MinkContext;
-use Behat\Symfony2Extension\Context\KernelDictionary;
 
 /**
  * This trait implements spin methods for ajax navigation.
@@ -12,8 +11,6 @@ use Behat\Symfony2Extension\Context\KernelDictionary;
  */
 trait SpinMinkContextTrait
 {
-    use KernelDictionary;
-
     /** @var MinkContext */
     protected $minkContext;
 
