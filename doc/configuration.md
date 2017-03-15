@@ -41,14 +41,9 @@ if you use our extended contexts
             alias_entity:
                 enabled: true
             mails:
-                default:
-                    path: "path/to/emailConfig/directory"
-                    key: mailsconfigkey
-                    translation:
-                        firstCharacter: "%"
-                        lastCharacter: "%"
-                config_2:
-                    path: "…"
-                    key: "…"
-                    […]
+                path: "path/to/emailConfig/directory"
+                key: mailsconfigkey
+                translation:
+                    firstCharacter: "%"
+                    lastCharacter: "%"
 ```

@@ -45,7 +45,7 @@ class Extension implements ExtensionInterface
             $container->addCompilerPass(new Compiler\AliasEntityPass());
         }
         $container->addCompilerPass(new Compiler\ExtendedTableNodePass());
-        if ($config['mails']) {
+        if (isset($config['mails']) && isset($config['mails']['path']) && isset($config['mails']['key'])) {
             $loader->load('mail.yml');
             $container->addCompilerPass(new Compiler\MailPass());
         }
@@ -62,13 +62,14 @@ class Extension implements ExtensionInterface
                     ->canBeEnabled()
                 ->end()
                 ->arrayNode('mails')
-                    ->prototype('array')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('path')
-                            ->isRequired()
+                            ->defaultValue(null)
+                            ->cannotBeEmpty()
                         ->end()
                         ->scalarNode('key')
-                            ->defaultValue('keys')
+                            ->defaultValue(null)
                             ->cannotBeEmpty()
                         ->end()
                         ->arrayNode('translation')
