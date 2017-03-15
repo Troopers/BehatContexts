@@ -1,0 +1,16 @@
+acme_emails:
+    SIMPLE_EMAIL:
+        to: %userEmail%
+        from: admin@admin.email
+        subject: simple email about %subject%
+        contents:
+            strings:
+                - Simple Email Content
+    SIMPLE_EMAIL_WITH_CCI:
+        to: %userEmail%
+        from: admin@admin.email
+        CCI: cci@cci.email
+        subject: simple email about %subject%
+        contents:
+            strings:
+                - Simple Email Content

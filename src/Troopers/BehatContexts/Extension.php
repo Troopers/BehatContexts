@@ -41,7 +41,7 @@ class Extension implements ExtensionInterface
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/services'));
         $loader->load('core.yml');
 
-        if ($config['alias_entity']['enabled']) {
+        if (isset($config['alias_entity']) && isset($config['alias_entity']['enabled'])) {
             $container->addCompilerPass(new Compiler\AliasEntityPass());
         }
         $container->addCompilerPass(new Compiler\ExtendedTableNodePass());

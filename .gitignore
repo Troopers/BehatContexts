@@ -1,1 +1,3 @@
 /vendor/
+/src/Troopers/BehatContexts/Tests/App/cache/
+/composer.lock

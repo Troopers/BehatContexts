@@ -18,7 +18,7 @@ acme_emails:
     SIMPLE_EMAIL:
         to: %userEmail%
         from: admin@admin.email
-        subjet: simple email about %subject%
+        subject: simple email about %subject%
         contents:
             strings:
                 - Simple Email Content
@@ -26,7 +26,7 @@ acme_emails:
         to: %userEmail%
         from: admin@admin.email
         CCI: cci@cci.email
-        subjet: simple email about %subject%
+        subject: simple email about %subject%
         contents:
             strings:
                 - Simple Email Content
