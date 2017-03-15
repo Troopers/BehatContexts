@@ -7,16 +7,10 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = [
-            new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-        ];
-
-        return $bundles;
+        return [];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__.'/config.yml');
     }
 }
