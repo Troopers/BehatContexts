@@ -1,4 +1,4 @@
-#Mail Context
+# Mail Context
 
 ## Examples
 
@@ -7,8 +7,16 @@ behat.yml
 ```yaml
     Troopers\BehatContexts\Extension:
         mails:
-            path: "features/mailconfig"
-            key: acme_emails
+            default:
+                path: "features/mailconfig"
+                key: acme_emails
+                translation:
+                    firstCharacter: "%"
+                    lastCharacter: "%"
+            config_2:
+                path: "…"
+                key: "…"
+                […]
 ```
 
 features/mailconfig/testconfig.yml
