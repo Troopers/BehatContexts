@@ -31,12 +31,10 @@ class MailParser
 
     public function loadMails()
     {
-        foreach ($this->mailsConfig as $mailConfig) {
-            $config = $this->reader->load($mailConfig['path'], $mailConfig['key']);
-            foreach ($config as $eventName => $emailConfig) {
-                $this->validMailConfig($eventName, $emailConfig);
-                $this->mailCollection->set($eventName, $emailConfig);
-            }
+        $config = $this->reader->load($this->mailsConfig['path'], $this->mailsConfig['key']);
+        foreach ($config as $eventName => $emailConfig) {
+            $this->validMailConfig($eventName, $emailConfig);
+            $this->mailCollection->set($eventName, $emailConfig);
         }
     }
 
