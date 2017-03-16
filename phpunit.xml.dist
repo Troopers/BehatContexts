@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://phpunit.de/manual/3.7/en/appendixes.configuration.html -->
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/3.7/phpunit.xsd"
+        backupGlobals="false"
+        backupStaticAttributes="false"
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        beStrictAboutTestsThatDoNotTestAnything="true"
+        beStrictAboutOutputDuringTests="true"
+        beStrictAboutTestSize="true"
+        reportUselessTests="true"
+        disallowTestOutput="true"
+>
+
+    <php>
+        <server name="MAILCATCHER_HTTP" value="http://127.0.0.1:1080"/>
+        <server name="MAILCATCHER_SMTP" value="smtp://127.0.0.1:1025"/>
+    </php>
+
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>src/Troopers/BehatContexts/Tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

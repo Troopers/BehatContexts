@@ -12,6 +12,6 @@ dependencies:
 
 test:
   override:
-    - vendor/phpunit/phpunit/phpunit src/ --verbose --tap
+    - vendor/bin/phpunit --verbose --tap
     - vendor/bin/behat --config behat.yml
     - vendor/bin/behat --config behat_config.yml
