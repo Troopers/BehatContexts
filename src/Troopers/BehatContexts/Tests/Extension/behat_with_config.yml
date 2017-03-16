@@ -1,4 +1,5 @@
 imports:
+    # import file from the root
     - "behat.yml"
 
 default:
@@ -14,7 +15,7 @@ default:
             alias_entity:
                 enabled: true
             mails:
-                path: "src/Troopers/BehatContexts/Tests/Features/Fixtures"
+                path: "../Features/Fixtures"
                 key: "acme_emails"
                 translation:
                     firstCharacter: "f"

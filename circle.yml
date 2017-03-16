@@ -14,4 +14,4 @@ test:
   override:
     - vendor/phpunit/phpunit/phpunit src/ --verbose --tap
     - vendor/bin/behat --config behat.yml
-    - vendor/bin/behat --config behat_config.yml
+    - vendor/bin/behat --config src/Troopers/BehatContexts/Tests/Extension/behat_with_config.yml
