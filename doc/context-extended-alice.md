@@ -1,8 +1,8 @@
-#Extended Alice Context
+# Extended Alice Context
 
-##Parent Alice Context
+## Parent Alice Context
 
-[KnpLabs/FriendlyContexts](https://github.com/KnpLabs/FriendlyContexts/edit/master/doc/context-alice.md)
+[KnpLabs/FriendlyContexts](https://github.com/KnpLabs/FriendlyContexts/blob/master/doc/context-alice.md)
 
 ## Define Id for Alice
 
@@ -15,7 +15,20 @@ App\Entity\User:
         firstname: John
         lastname: Doe
 ```
+
 ## Alias entity
+
+You have to enable aliasing in the `behat.yml` configuration:
+
+```yml
+default:
+    extensions:
+        Troopers\BehatContexts\Extension:
+            alias_entity:
+                enabled: true
+```
+
+Then you can alias entities with `@` in order to reuse them later:
 
 ```gherkin
 @alice(User)
@@ -23,10 +36,10 @@ Feature: My feature
     The feature description
     
     Background:
-        Given the following users
+        Given the following users:
             | @         | firstname | lastname |
             | @MainUser | John      | Doe      |
-        And the fowing products:
+        And the following products:
             | name  | user      |
             | Shoes | @MainUser |
     ...
