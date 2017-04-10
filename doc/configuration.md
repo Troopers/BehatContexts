@@ -4,7 +4,7 @@ Installation
 Execute
 
 ```
-composer require troopers/behat-contexts 
+composer require --dev troopers/behat-contexts 
 ```
 
 Edit behat.yml
