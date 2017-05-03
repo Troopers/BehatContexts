@@ -5,6 +5,8 @@ namespace Troopers\BehatContexts\Mail;
 use Alex\MailCatcher\Client;
 use Alex\MailCatcher\Message;
 use Behat\Mink\Selector\NamedSelector;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Troopers\BehatContexts\Component\ConfigTranslator;
 use Troopers\BehatContexts\ContentValidator\ContentValidatorInterface;
@@ -13,12 +15,13 @@ use Troopers\BehatContexts\DependencyInjection\Compiler\ContentValidatorChain;
 /**
  * Class MailChecker.
  */
-class MailChecker
+class MailChecker implements ContainerAwareInterface
 {
     private $configTranslator;
     private $mailConfig;
     private $mailcatcherClient;
     private $contentValidatorChain;
+    private $container;
 
     /**
      * MailChecker constructor.
@@ -34,6 +37,19 @@ class MailChecker
         $this->mailConfig = $mailConfig;
         $this->mailcatcherClient = $mailcatcherClient;
         $this->contentValidatorChain = $contentValidatorChain;
+    }
+
+    /**
+     * Sets the container.
+     *
+     * @param ContainerInterface|null $container A ContainerInterface instance or null
+     *
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 
     /**
@@ -98,6 +114,9 @@ class MailChecker
 
                 foreach ($contentsToTest as $value) {
                     $contentValidator->supports($value);
+                    if ($contentValidator instanceof ContainerAwareInterface) {
+                        $contentValidator->setContainer($this->container);
+                    }
                     $contentValidator->valid($value, $content);
                 }
             }

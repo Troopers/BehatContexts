@@ -19,3 +19,8 @@ services:
         class: Troopers\BehatContexts\ContentValidator\TableValidator
         tags:
           - { name: troopers.behatcontexts.content_validator, contentType: 'tables' }
+
+    troopers.behatcontexts.content_validator.link:
+        class: Troopers\BehatContexts\ContentValidator\LinkValidator
+        tags:
+          - { name: troopers.behatcontexts.content_validator, contentType: 'links' }
