@@ -8,18 +8,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Class LinkValidator
- * @package Wweeddoo\CoreBundle\ContentValidator
+ * Class LinkValidator.
  */
 class LinkValidator implements ContentValidatorInterface, ContainerAwareInterface
 {
-    /** @var  Router $router */
+    /** @var Router $router */
     private $router;
 
     /**
      * Sets the container.
      *
      * @param ContainerInterface|null $container A ContainerInterface instance or null
+     *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      */
@@ -38,12 +38,10 @@ class LinkValidator implements ContentValidatorInterface, ContainerAwareInterfac
         if (!is_array($value)) {
             throw new ContentValidatorException(sprintf('To define a link you need to use an array, value given (%s)', json_encode($value)));
         } else {
-            if(!isset($value['link']) && !$value['link'])
-            {
+            if (!isset($value['link']) && !$value['link']) {
                 throw new ContentValidatorException(sprintf('To define a link you need to set "link", value given (%s)', json_encode($value)));
             }
-            if(!isset($value['url']) && (!isset($value['route']) && $value['route'] && !isset($value['parameters']) && !is_array($value['parameters'])))
-            {
+            if (!isset($value['url']) && (!isset($value['route']) && $value['route'] && !isset($value['parameters']) && !is_array($value['parameters']))) {
                 throw new ContentValidatorException(sprintf('To define a link you need to set "url" or "route" and "parameters" array, value given (%s)', json_encode($value)));
             }
         }
@@ -60,16 +58,14 @@ class LinkValidator implements ContentValidatorInterface, ContainerAwareInterfac
     public function valid($value = [], $content = '')
     {
         $link = $value['link'];
-        if(isset($value['url']))
-        {
+        if (isset($value['url'])) {
             $url = $value['url'];
-        }else{
+        } else {
             $url = $this->router->generate($value['route'], $value['parameters']);
         }
         $crawler = new Crawler($content);
         $mailLink = $crawler->selectLink($value['link']);
-        if(!$mailLink->html())
-        {
+        if (!$mailLink->html()) {
             throw new \InvalidArgumentException(sprintf('Unable to find a link for "%s" link ', $link));
         }
         if (false === strpos($url, $mailLink->attr('href'))) {

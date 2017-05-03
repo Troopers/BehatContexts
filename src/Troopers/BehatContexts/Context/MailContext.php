@@ -23,7 +23,8 @@ class MailContext extends RawMinkContext implements Context, KernelAwareContext
 
     /**
      * @param \Troopers\BehatContexts\Collection\MailCollection $mailCollection
-     * @param \Troopers\BehatContexts\Mail\MailChecker $mailChecker
+     * @param \Troopers\BehatContexts\Mail\MailChecker          $mailChecker
+     *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      */

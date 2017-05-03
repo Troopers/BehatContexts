@@ -43,6 +43,7 @@ class MailChecker implements ContainerAwareInterface
      * Sets the container.
      *
      * @param ContainerInterface|null $container A ContainerInterface instance or null
+     *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
      */
@@ -50,6 +51,7 @@ class MailChecker implements ContainerAwareInterface
     {
         $this->container = $container;
     }
+
     /**
      * @param array $mail
      * @param array $values
@@ -112,8 +114,7 @@ class MailChecker implements ContainerAwareInterface
 
                 foreach ($contentsToTest as $value) {
                     $contentValidator->supports($value);
-                    if($contentValidator instanceof ContainerAwareInterface)
-                    {
+                    if ($contentValidator instanceof ContainerAwareInterface) {
                         $contentValidator->setContainer($this->container);
                     }
                     $contentValidator->valid($value, $content);
