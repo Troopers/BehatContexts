@@ -61,7 +61,7 @@ class LinkValidator implements ContentValidatorInterface, ContainerAwareInterfac
         if (isset($value['url'])) {
             $url = $value['url'];
         } else {
-            $referenceType = isset($value['referenceType']) ? $value['referenceType']*1 : 1;
+            $referenceType = isset($value['referenceType']) ? intval($value['referenceType']) : 1;
             $url = $this->router->generate($value['route'], $value['parameters'], $referenceType);
         }
         $crawler = new Crawler($content);
