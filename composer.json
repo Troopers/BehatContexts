@@ -5,7 +5,7 @@
     "require": {
         "php": ">=5.5.9",
         "behat/behat": "~3.0",
-        "knplabs/friendly-contexts": "0.7",
+        "knplabs/friendly-contexts": "~0.7",
         "alexandresalome/mailcatcher": "~1.2",
         "symfony/finder": ">=2.7|~3.0",
         "symfony/yaml": ">=2.7|~3.0",
