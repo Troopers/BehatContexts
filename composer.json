@@ -1,6 +1,6 @@
 {
     "name": "troopers/behat-contexts",
-    "description": "Librairy of contexts",
+    "description": "Library of contexts",
     "type": "library",
     "require": {
         "php": ">=5.5.9",
