@@ -1,14 +1,14 @@
 {
     "name": "troopers/behat-contexts",
-    "description": "Librairy of contexts",
+    "description": "Library of contexts",
     "type": "library",
     "require": {
         "php": ">=5.5.9",
         "behat/behat": "~3.0",
-        "knplabs/friendly-contexts": "0.7",
+        "knplabs/friendly-contexts": "~0.7",
         "doctrine/dbal": "^2.5",
         "doctrine/orm": "^2.5",
-        "symfony/property-access": ">=2.8"
+        "symfony/property-access": ">=2.8|~3.0"
     },
     "license": "MIT",
     "authors": [

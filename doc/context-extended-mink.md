@@ -1,6 +1,6 @@
-#Extended Mink Context
+# Extended Mink Context
 
-##Parent Entity Context
+## Parent Entity Context
 
 [KnpLabs/FriendlyContexts](https://github.com/KnpLabs/FriendlyContexts/edit/master/doc/context-entity.md)
 
