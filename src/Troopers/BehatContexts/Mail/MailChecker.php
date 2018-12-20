@@ -179,7 +179,7 @@ class MailChecker implements ContainerAwareInterface
         if (!$message->isMultipart()) {
             $content = $message->getContent();
         } elseif ($message->hasPart('text/html')) {
-            $crawler = new Crawler($message);
+            $crawler = new Crawler($message->getPart('text/html')->getContent());
             $content = $crawler->filter('body')->text();
         } elseif ($message->hasPart('text/plain')) {
             $content = $message->getPart('text/plain')->getContent();
